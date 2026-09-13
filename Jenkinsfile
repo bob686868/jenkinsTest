@@ -1,9 +1,9 @@
-pipeline{
+pipeline {
     agent any
     stages {
         stage('Hello') {
             steps {
-                echo 'Hello world from github'
+                echo 'Hello world from github with trigger'
             }
         }
     }
