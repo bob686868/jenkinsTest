@@ -32,6 +32,7 @@ pipeline {
             steps {
                 // Applies changes without manual confirmation prompt
                 sh 'terraform apply -auto-approve'
+                echo 'hello world'
             }
         }
     }
