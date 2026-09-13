@@ -2,37 +2,35 @@ pipeline {
     agent any
 
     environment {
-        // Suppress interactive prompts during execution
         TF_IN_AUTOMATION = 'true'
+        // Injects keys from Jenkins Credentials store into environment variables
+        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_DEFAULT_REGION    = 'us-east-1'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Clones your GitHub repo automatically
                 checkout scm
             }
         }
 
         stage('Terraform Init') {
             steps {
-                // Prepares working directory and providers
                 sh 'terraform init'
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                // Shows planned changes
                 sh 'terraform plan'
             }
         }
 
         stage('Terraform Apply') {
             steps {
-                // Applies changes without manual confirmation prompt
                 sh 'terraform apply -auto-approve'
-                echo 'hello world'
             }
         }
     }
