@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         TF_IN_AUTOMATION = 'true'
-        // Injects keys from Jenkins Credentials store into environment variables
+        TF_HTTP_TIMEOUT  = '300' // Increases HTTP timeout to 5 minutes
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_DEFAULT_REGION    = 'us-east-1'
@@ -18,7 +18,10 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                sh 'terraform init'
+                // Added retry logic to handle transient network drops
+                retry(3) {
+                    sh 'terraform init'
+                }
             }
         }
 
