@@ -2,10 +2,9 @@ pipeline {
     agent any
 
     environment {
-        TF_IN_AUTOMATION = 'true'
-        TF_HTTP_TIMEOUT  = '300' // Increases HTTP timeout to 5 minutes
-        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        // Pulls stored AWS keys securely from Jenkins Credentials
+        AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
         AWS_DEFAULT_REGION    = 'us-east-1'
     }
 
@@ -16,23 +15,9 @@ pipeline {
             }
         }
 
-        stage('Terraform Init') {
+        stage('Deploy EC2') {
             steps {
-                // Added retry logic to handle transient network drops
-                retry(3) {
-                    sh 'terraform init'
-                }
-            }
-        }
-
-        stage('Terraform Plan') {
-            steps {
-                sh 'terraform plan'
-            }
-        }
-
-        stage('Terraform Apply') {
-            steps {
+                sh 'terraform init'
                 sh 'terraform apply -auto-approve'
             }
         }
