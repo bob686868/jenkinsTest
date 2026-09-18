@@ -16,6 +16,6 @@ resource "aws_instance" "simple_ec2" {
   instance_type = "t3.micro"            # Free Tier eligible in us-east-2
 
   tags = {
-    Name = "Jenkins-Simple-EC2"
+    Name = "2Jenkins-Simple-EC2"
   }
 }
