@@ -14,12 +14,11 @@ pipeline {
                 checkout scm
             }
         }
-
-        stage('Deploy EC2') {
-            steps {
-                sh 'terraform init'
-                sh 'terraform apply -auto-approve'
-            }
+    stage('Deploy EC2') {
+        steps {
+            sh 'terraform init -upgrade'
+            sh 'terraform apply -auto-approve'
         }
+    }
     }
 }
